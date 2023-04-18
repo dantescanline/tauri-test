@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+<script>
+  console.log('hello')
+  let readDir = window.__TAURI__.fs.readDir
+
+
+  async function go () {
+    const entries = await readDir('/home/switch' );
+    console.log(entries)
+
+    let inner = ''
+
+    for(entry of entries) {
+      console.log(entry)
+      inner += '<li>'
+      if(entry.children) {
+        inner += `Directory ${entry.name}`
+      } else {
+        inner += `File ${entry.name}`
+      }
+      inner += '</li>'
+    }
+
+    document.getElementById('files-list').innerHTML = inner
+  }
+
+  go()
+</script>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #221818;
+    color: white;
+  }
+
+  #app {
+    position: relative;
+    height: 100%;
+  }
+
+  #content {
+    padding: 10px;
+  }
+
+  .long {
+    height: 900px;
+    border: 1px solid yellow;
+    border-radius: 10px 10px;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div id="content">
+      <h1>File Browser</h1>
+      <p>this is a program, for doing stuff</p>
+      <h3>Files List:</h3>
+      <ul id="files-list"></ul>
+    </div>
+  </div>
+</body>
+
+</html>
